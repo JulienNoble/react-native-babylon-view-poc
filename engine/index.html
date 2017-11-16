@@ -6,10 +6,30 @@
   <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
 
   <title>BabylonView</title>
+  <style>
+    html,
+    body {
+      overflow: hidden;
+      width: 100%;
+      height: 100%;
+      margin: 0;
+      padding: 0;
+    }
+
+    #renderCanvas {
+      width: 100%;
+      height: 100%;
+      touch-action: none;
+    }
+  </style>
+  <script src="./babylon.js"></script>
+  <script src="./pep.js"></script>
+
 </head>
 
 <body>
-  <p>Hi, we're in a webview. Check your logs (if you're on iOS).</p>
+  <canvas id="renderCanvas" touch-action="none"></canvas>
+
   <script src="./engine.js"></script>
 </body>
 
