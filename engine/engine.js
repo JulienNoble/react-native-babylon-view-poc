@@ -1,9 +1,9 @@
 // check if we're on iOS
-var userAgent = window.navigator.userAgent.toLowerCase(),
+const userAgent = window.navigator.userAgent.toLowerCase(),
   ios = /iphone|ipod|ipad/.test(userAgent);
 
 // "helper" function to help you get stuff back to the app
-var sendMessage = function(message) {
+const sendMessage = message => {
   if (window.webkit.messageHandlers.reactNative.postMessage) {
     // iOS
     window.webkit.messageHandlers.reactNative.postMessage(message);
@@ -14,7 +14,7 @@ var sendMessage = function(message) {
 };
 
 // helper log function
-var log = function(message, type) {
+const log = (message, type) => {
   if (ios)
     sendMessage({
       message: `[BabylonView] ${message}`,
@@ -23,24 +23,50 @@ var log = function(message, type) {
 };
 
 // replacing console.log and error event to redirect their outputs to the app
-var baseLogFunction = console.log;
-console.log = function() {
-  baseLogFunction.apply(console, arguments);
-
-  var args = Array.prototype.slice.call(arguments);
-  for (var i = 0; i < args.length; i++) {
+console.log = (...args) => {
+  for (let i = 0; i < args.length; i++) {
     log(`[window] ${args[i]}`, 'info');
   }
 };
 
-window.onerror = function(message, url, linenumber) {
-  log(
-    'JavaScript error: ' + message + ' on line ' + linenumber + ' for ' + url,
-    'error',
-  );
+window.onerror = (message, url, linenumber) => {
+  log(`JavaScript error: ${message} on line ${linenumber} for ${url}`, 'error');
 };
 
-// testing logs
-log('Yo logs woohoo');
-log('More discrete logs', 'info');
-console.log('window logs');
+// Babylon
+const canvas = document.getElementById('renderCanvas');
+const engine = new BABYLON.Engine(canvas);
+
+const setup = () => {
+  const scene = new BABYLON.Scene(engine);
+
+  const camera = new BABYLON.ArcRotateCamera(
+    'Camera',
+    Math.PI,
+    Math.PI / 4,
+    10,
+    BABYLON.Vector3.Zero(),
+    scene,
+  );
+  camera.attachControl(canvas, true);
+
+  const light = new BABYLON.HemisphericLight(
+    'light',
+    new BABYLON.Vector3(0, 1, 1),
+    scene,
+  );
+
+  const box = BABYLON.MeshBuilder.CreateBox('box', {}, scene);
+
+  return scene;
+};
+
+const scene = setup();
+
+engine.runRenderLoop(() => {
+  scene.render();
+});
+
+window.addEventListener('resize', () => {
+  engine.resize();
+});
