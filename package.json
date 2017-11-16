@@ -10,13 +10,15 @@
     "react-native": "0.50.3",
     "react-native-fs": "^2.8.5",
     "react-native-static-server": "git://github.com/JulienNoble/react-native-static-server.git",
+    "react-native-windows": "0.50.0-rc.2",
     "react-native-wkwebview-reborn": "^1.10.0"
   },
   "devDependencies": {
     "babel-jest": "21.2.0",
     "babel-preset-react-native": "4.0.0",
     "jest": "21.2.1",
-    "react-test-renderer": "16.0.0"
+    "react-test-renderer": "16.0.0",
+    "rnpm-plugin-windows": "^0.2.8"
   },
   "jest": {
     "preset": "react-native"
